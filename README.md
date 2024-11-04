@@ -33,7 +33,7 @@ El proyecto se cimenta sobre la implementación de un clúster de `Kubernetes` c
 
 
 ### Componentes principales
-#### 2.1.1. Componentes principales**
+#### 2.1.1. Componentes principales
 - Se implementa un clúster `Kubernetes` administrado mediante `Amazon EKS` (`Elastic Kubernetes Service`) que ofrece alta disponibilidad y escalabilidad para el despliegue de servicios de contenedores, en este caso, el `CMS Drupal`.
 - Drupal se ejecuta en dos `pods` dentro del clúster, cada uno como una instancia de aplicación para manejar el tráfico y distribuir la carga, esto asegura una mayor disponibilidad y permite el balanceo de carga entre las instancias para responder a múltiples solicitudes de usuarios.
 - Se configura una instancia de `MySQL 8.0.4-debian` en el clúster como base de datos única para almacenar y gestionar los datos de `Drupal`, esta instancia facilita el manejo de datos transaccionales y es accesible desde los `pods` de Drupal en el clúster.
