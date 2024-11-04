@@ -14,43 +14,43 @@ La actividad consiste en desplegar un sistema `CMS Drupal` en un `cluster Kubern
 
 ## 1.1. Aspectos cumplidos o desarrollados
 - Diagrama de arquitectura.
-- Clúster de Kubernetes desplegado en AWS usando EKS.
-- Despliegue de CMS Drupal en el clúster.
-- Balanceador de carga implementado con un Ingress Nginx y el balanceador de carga nativo de AWS.
-- Implementación de una base de datos MySQL 8.0.4-debian en el clúster.
-- Uso del servicio EFS para el sistema de archivos.
-- Implementación de un dominio personalizado (reto2.site) en Hostinger.
-- Certificado SSL implementado con Let's Encrypt.
+- Clúster de `Kubernetes` desplegado en `AWS` usando `EKS`.
+- Despliegue de `CMS Drupal` en el clúster.
+- Balanceador de carga implementado con un `Ingress Nginx` y el balanceador de carga nativo de `AWS`.
+- Implementación de una base de datos `MySQL 8.0.4-debian` en el clúster.
+- Uso del servicio `EFS` para el sistema de archivos.
+- Implementación de un dominio personalizado (`reto2.site`) en `Hostinger`.
+- Certificado `SSL` implementado con `Let's Encrypt`.
 - Documentación.
 
 ## 1.2. Aspectos NO cumplidos o desarrollados
-El único aspecto que no se logró cumplir en el proyecto fue la alta disponibilidad en la base de datos. Esto se debe a que solo se cuenta con una instancia de base de datos MySQL 8.0.4-debian implementada en el clúster. Al no tener una configuración redundante, esta instancia representa un único punto de fallo, por lo que en caso de falla, la disponibilidad del sistema se vería afectada.
+El único aspecto que no se logró cumplir en el proyecto fue la alta disponibilidad en la base de datos. Esto se debe a que solo se cuenta con una instancia de base de datos `MySQL 8.0.4-debian` implementada en el clúster. Al no tener una configuración redundante, esta instancia representa un único punto de fallo, por lo que en caso de falla, la disponibilidad del sistema se vería afectada.
 
 ### 2. Información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas
-El proyecto se cimenta sobre la implementación de un clúster de Kubernetes con alta disponibilidad para un CMS Drupal.
+El proyecto se cimenta sobre la implementación de un clúster de `Kubernetes` con alta disponibilidad para un `CMS Drupal` como se muestra en el siguiente diagrama de arquitectura:
 
 ![Add a heading](https://github.com/user-attachments/assets/66f55aa4-00fa-437d-909d-62a823a43b50)
 
 
 ### Componentes principales
 #### 2.1.1. Componentes principales**
-- Se implementa un clúster Kubernetes administrado mediante Amazon EKS (Elastic Kubernetes Service) que ofrece alta disponibilidad y escalabilidad para el despliegue de servicios de contenedores, en este caso, el CMS Drupal.
-- Drupal se ejecuta en dos pods dentro del clúster, cada uno como una instancia de aplicación para manejar el tráfico y distribuir la carga, esto asegura una mayor disponibilidad y permite el balanceo de carga entre las instancias para responder a múltiples solicitudes de usuarios.
-- Se configura una instancia de MySQL 8.0.4-debian en el clúster como base de datos única para almacenar y gestionar los datos de Drupal, esta instancia facilita el manejo de datos transaccionales y es accesible desde los pods de Drupal en el clúster.
+- Se implementa un clúster `Kubernetes` administrado mediante `Amazon EKS` (`Elastic Kubernetes Service`) que ofrece alta disponibilidad y escalabilidad para el despliegue de servicios de contenedores, en este caso, el `CMS Drupal`.
+- Drupal se ejecuta en dos `pods` dentro del clúster, cada uno como una instancia de aplicación para manejar el tráfico y distribuir la carga, esto asegura una mayor disponibilidad y permite el balanceo de carga entre las instancias para responder a múltiples solicitudes de usuarios.
+- Se configura una instancia de `MySQL 8.0.4-debian` en el clúster como base de datos única para almacenar y gestionar los datos de `Drupal`, esta instancia facilita el manejo de datos transaccionales y es accesible desde los `pods` de Drupal en el clúster.
 - Amazon EFS (Elastic File System) se usa como sistema de archivos compartido para los pods de Drupal. EFS permite que los datos y archivos se mantengan disponibles y sean accesibles de forma persistente entre los distintos nodos en el clúster, asegurando redundancia y durabilidad.
   
 #### 2.1.2. Comunicación y Balanceo de Carga
-- Se configura un Ingress Controller de Nginx en el clúster para distribuir el tráfico entre las instancias de Drupal; el balanceador de carga nativo de AWS (ALB) también se utiliza en conjunto para gestionar el tráfico externo, garantizando que las solicitudes de los usuarios se repartan eficientemente y brindando una capa adicional de disponibilidad y redundancia.
-- Para asegurar la comunicación entre los usuarios y el sitio, se implementa un certificado SSL mediante Let’s Encrypt, esto permite la comunicación encriptada en el dominio personalizado, ademas ayuda a garantizar la privacidad y seguridad de los datos.
-- Se adquiere e implementa el dominio `reto2.site` en Hostinger, el cual se configura para apuntar al balanceador de carga de AWS, permitiendo que los usuarios accedan de manera directa y sencilla a la aplicación Drupal en el clúster.
+- Se configura un `Ingress Controller` de `Nginx` en el clúster para distribuir el tráfico entre las instancias de `Drupal`; el balanceador de carga nativo de `AWS` (`ALB`) también se utiliza en conjunto para gestionar el tráfico externo, garantizando que las solicitudes de los usuarios se repartan eficientemente y brindando una capa adicional de disponibilidad y redundancia.
+- Para asegurar la comunicación entre los usuarios y el sitio, se implementa un certificado `SSL` mediante `Let’s Encrypt`, esto permite la comunicación encriptada en el dominio personalizado, ademas ayuda a garantizar la privacidad y seguridad de los datos.
+- Se adquiere e implementa el dominio `reto2.site` en `Hostinger`, el cual se configura para apuntar al balanceador de carga de `AWS`, permitiendo que los usuarios accedan de manera directa y sencilla a la aplicación `Drupal` en el clúster.
 
 #### 2.2. Patrones
-- Estructura modular y separación de responsabilidades segmentando la base de datos, la aplicación y el almacenamiento en diferentes servicios (MySQL, Drupal y EFS).
-- Despliegue declarativo mediante manifiestos de Kubernetes (archivos YAML) para definir el despliegue de cada componente, facilitando la reproducción y escalabilidad del entorno.
-- Patrón de alta disponibilidad mediante el uso de múltiples instancias de Drupal junto con el balanceador de carga y el almacenamiento compartido en EFS.
+- Estructura modular y separación de responsabilidades segmentando la base de datos, la aplicación y el almacenamiento en diferentes servicios (`MySQL`, `Drupal` y `EFS`).
+- Despliegue declarativo mediante manifiestos de `Kubernetes` (archivos `YAML`) para definir el despliegue de cada componente, facilitando la reproducción y escalabilidad del entorno.
+- Patrón de alta disponibilidad mediante el uso de múltiples instancias de `Drupal` junto con el balanceador de carga y el almacenamiento compartido en `EFS`.
 
 #### 2.3. Buenas prácticas
-- Gestión de conexiones seguras (SSL).
+- Gestión de conexiones seguras (`SSL`).
 - Manejo de errores y escalabilidad.
 - Documentación y comentarios.
 - Automatización mediante declaración de manifiestos.
@@ -58,10 +58,10 @@ El proyecto se cimenta sobre la implementación de un clúster de Kubernetes con
 
 ### 3. Descripción del ambiente de desarrollo y técnico: lenguaje de programación, librerías, paquetes, etc., con sus números de versiones.
 
-El proyecto implementa una infraestructura de alta disponibilidad y escalabilidad para un sitio Drupal en un clúster Kubernetes, desplegado en AWS usando Amazon EKS. A continuación se describe el ambiente técnico y los componentes utilizados:
+El proyecto implementa una infraestructura de alta disponibilidad y escalabilidad para un sitio Drupal en un clúster `Kubernetes`, desplegado en `AWS` usando `Amazon EKS`. A continuación se describe el ambiente técnico y los componentes utilizados:
 
 #### 3.1. Lenguaje de Programación y Aplicación Principal:
- Drupal es el CMS principal usado para el proyecto, desplegado mediante una imagen Docker de Bitnami
+ Drupal es el `CMS principal` usado para el proyecto, desplegado mediante una imagen `Docker` de `Bitnami`
   
 #### 3.2. Servicios en Kubernetes:
 - Amazon Elastic Kubernetes Service (EKS) proporciona la orquestación del clúster Kubernetes, facilitando el despliegue y gestión de los contenedores en una infraestructura de nube escalable.
