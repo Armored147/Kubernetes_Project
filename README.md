@@ -61,48 +61,62 @@ El proyecto se cimenta sobre la implementación de un clúster de `Kubernetes` c
 El proyecto implementa una infraestructura de alta disponibilidad y escalabilidad para un sitio Drupal en un clúster `Kubernetes`, desplegado en `AWS` usando `Amazon EKS`. A continuación se describe el ambiente técnico y los componentes utilizados:
 
 #### 3.1. Lenguaje de Programación y Aplicación Principal:
+
  Drupal es el `CMS principal` usado para el proyecto, desplegado mediante una imagen `Docker` de `Bitnami`
   
 #### 3.2. Servicios en Kubernetes:
-- Amazon Elastic Kubernetes Service (EKS) proporciona la orquestación del clúster Kubernetes, facilitando el despliegue y gestión de los contenedores en una infraestructura de nube escalable.
-- NGINX Ingress Controller implementado como balanceador de carga en la capa de aplicación para distribuir el tráfico entre las instancias de Drupal en el clúster.
-- AWS Load Balancer (ELB) utilizado como balanceador de carga adicional para manejar la entrada y salida del tráfico HTTP y HTTPS al clúster desde el exterior.
+
+- `Amazon Elastic Kubernetes Service` (`EKS`) proporciona la orquestación del clúster `Kubernetes`, facilitando el despliegue y gestión de los contenedores en una infraestructura de nube escalable.
+- `NGINX Ingress Controller` implementado como balanceador de carga en la capa de aplicación para distribuir el tráfico entre las instancias de `Drupal` en el clúster.
+- `AWS Load Balancer` (`ELB`) utilizado como balanceador de carga adicional para manejar la entrada y salida del tráfico `HTTP` y `HTTPS` al clúster desde el exterior.
 
 #### 3.3. Base de Datos:
-MySQL 8.0.4 (Debian es la base de datos MySQL que está desplegada dentro del clúster Kubernetes. Esta versión específica de MySQL fue seleccionada por su estabilidad y compatibilidad con Drupal.
+
+`MySQL 8.0.4` (`Debian` es la base de datos `MySQL` que está desplegada dentro del clúster `Kubernetes`. Esta versión específica de `MySQL` fue seleccionada por su estabilidad y compatibilidad con `Drupal`.
   
 #### 3.4. Sistema de Archivos:
-Amazon Elastic File System (EFS) proporciona un sistema de archivos compartido y persistente para los contenedores en el clúster. AWS EFS permite un almacenamiento de alta disponibilidad, accesible desde múltiples instancias dentro del clúster, y es usado para almacenar archivos estáticos y contenido generado por el usuario en Drupal.
+
+`Amazon Elastic File System` (`EFS`) proporciona un sistema de archivos compartido y persistente para los contenedores en el clúster. `AWS EFS` permite un almacenamiento de alta disponibilidad, accesible desde múltiples instancias dentro del clúster, y es usado para almacenar archivos estáticos y contenido generado por el usuario en `Drupal`.
 
 #### 3.5. Certificados y Seguridad:
-El certificado SSL se implementa usando Let's Encrypt, para asegurar la comunicación HTTPS en el dominio.
+
+El certificado `SSL` se implementa usando `Let's Encrypt`, para asegurar la comunicación `HTTPS` en el dominio.
 
 #### 3.6. Dominio:
-Hostinger (reto2.site) Es dónde se registra y administra el dominio, permitiendo la asignación de un nombre de dominio personalizado y gestión de DNS para el balanceador de carga en AWS.
+`Hostinger` (`reto2.site`) Es dónde se registra y administra el dominio, permitiendo la asignación de un nombre de dominio personalizado y gestión de `DNS` para el balanceador de carga en `AWS`.
 
 #### 3.7. Otras Herramientas y Librerías:
-- kubectl para gestionar los recursos del clúster Kubernetes.
-- AWS CLI utilizado para conectarse por medio de SSH a el clúster de Kubernetes.
-- Helm utilizado para facilitar el despliegue y la gestión de aplicaciones en el clúster.
+
+- `kubectl` para gestionar los recursos del clúster `Kubernetes`.
+- `AWS CLI` utilizado para conectarse por medio de `SSH` a el clúster de `Kubernetes`.
+- `Helm` utilizado para facilitar el despliegue y la gestión de aplicaciones en el clúster.
 
 
 ### 4. Descripción del ambiente de EJECUCIÓN (en producción) lenguaje de programación, librerias, paquetes, etc, con sus numeros de versiones.
 
 ### 4.1. información general del clúster:
-Pasra saber la inforación general de clúster ejecutamos el siguiente comando:
+
+Para saber la información general del clúster ejecutamos el siguiente comando:
+
 ```bash
 kubectl cluster-info
 ```
+
 En nuestro caso la inforación arrojada de esta operación es la siguiente:
+
 ```bash
 Kubernetes control plane is running at https://0713612045000A113B198A3B9AAEB7BD.gr7.us-east-1.eks.amazonaws.com
 CoreDNS is running at https://0713612045000A113B198A3B9AAEB7BD.gr7.us-east-1.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 ```
+
 Luego comprobamos la información general de los pods con el siguiente comando:
+
 ```bash
 kubectl get nodes -o wide
 ```
+
 En nuestro caso la inforación arrojada de esta operación es la siguiente:
+
 ```bash
 NAME                              STATUS   ROLES    AGE   VERSION               INTERNAL-IP       EXTERNAL-IP      OS-IMAGE         KERNEL-VERSION                  CONTAINER-RUNTIME
 ip-192-168-11-45.ec2.internal     Ready    <none>   15h   v1.31.0-eks-a737599   192.168.11.45     44.203.226.125   Amazon Linux 2   5.10.226-214.880.amzn2.x86_64   containerd://1.7.22
@@ -112,9 +126,10 @@ ip-192-168-222-225.ec2.internal   Ready    <none>   15h   v1.31.0-eks-a737599   
 
 ### 4.2. Configuracion del clúster de Kubernetes y uso de AWS CLI.
 
-Para deplegar el proyecto en el ambiente de AWS, se deben de seguir los pasos descritos a continuacion.
+Para deplegar el proyecto en el ambiente de `AWS`, se deben de seguir los pasos descritos a continuacion.
 
 **4.2.1. Configuración del clúster en AWS**
+
 Para realizar la creación y configuración del entorno de desarollo en este caso, se debe seguir el tutorial disponible en el siguiente enlace de YouTube hasta el video número 8:
 
 [Playlist del tutorial de Kubernetes en AWS](https://www.youtube.com/playlist?list=PLkqaOL-oB94HAIRkA_5qdqk-x-1Hgo4i2)
