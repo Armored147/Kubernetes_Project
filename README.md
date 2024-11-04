@@ -29,7 +29,8 @@ El único aspecto que no se logró cumplir en el proyecto fue la alta disponibil
 ### 2. Información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas
 El proyecto se cimenta sobre la implementación de un clúster de Kubernetes con alta disponibilidad para un CMS Drupal.
 
-![P2P](https://github.com/user-attachments/assets/48f152bf-87f8-4818-ac21-65429d5d6fdb)
+![Add a heading](https://github.com/user-attachments/assets/66f55aa4-00fa-437d-909d-62a823a43b50)
+
 
 ### Componentes principales
 #### 2.1.1. Componentes principales**
