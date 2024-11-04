@@ -1,4 +1,4 @@
-### Tópicos Especiales en Telemática: C2466-ST0263-1716
+# Tópicos Especiales en Telemática: C2466-ST0263-1716
 
 ## Estudiantes
 - **Isis Catitza Amaya Arbeláez**, [icamayaa@eafit.edu.co](mailto:icamayaa@eafit.edu.co)
@@ -10,7 +10,7 @@
 # Reto No 2
 
 ## 1. Breve descripción de la actividad
-La actividad consiste en desplegar un sistema CMS Drupal en un clúster Kubernetes en la nube con alta disponibilidad y autoescalado. Este clúster debe incluir un dominio propio con SSL (reto2.sudominio.tld) y un balanceador de carga Nginx. Además, contará con dos servidores adicionales: uno para la base de datos (DBServer) usando Docker o instalación nativa, y otro como servidor de archivos (FileServer) implementando NFS. Se usará un servicio gestionado en nube como EKS de AWS o Kubernetes de GCP.
+La actividad consiste en desplegar un sistema `CMS Drupal` en un `cluster Kubernetes` en la nube con alta disponibilidad y autoescalado. Este clúster debe incluir un dominio propio con `SSL` (`reto2.sudominio.tld`) y un balanceador de carga `Nginx`. Además, contará con dos servidores adicionales: uno para la base de datos (`DBServer`) usando `Docker` o instalación nativa, y otro como servidor de archivos (`FileServer`) implementando `NFS`. Se usará un servicio gestionado en nube como `EKS` de `AWS` o `Kubernetes` de `GCP`.
 
 ## 1.1. Aspectos cumplidos o desarrollados
 - Diagrama de arquitectura.
