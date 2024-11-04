@@ -139,6 +139,7 @@ Es importante que, en el paso de creación del clúster, selecciones instancias 
 **Nota:** En el video `03 - Crear un clúster Kubernetes en AWS`, al llegar al minuto `1:42` durante la configuración del clúster, para fines prácticos, se omite el proceso de creación de roles y se utiliza el LabRole asignado por defecto. Del mismo modo, en el video `04 - Crear los nodos`, al llegar al minuto `1:35` en la configuración del grupo de nodos, utiliza `LabRole` en lugar de crear un nuevo rol.
 
 **4.2.2. Uso de AWS CLI** 
+
 Para terminos prácticos se sugiere hacer uso de `WSL` (Windows Subsystem for Linux) para realizar el trabajo con el clúster, por lo cuál se deja un paso a paso de lo que se debe realizar para dicha instalación y conexión:
 1. Actualizar el sistema (opcional pero recomendado):
 ```bash
@@ -179,6 +180,7 @@ Por último, se deja un enlace a la documentación oficial de AWS sobre AWS CLI:
 [Documentación de instalación de AWS CLI en Linux](https://docs.aws.amazon.com/cli/v1/userguide/install-linux.html#install-linux-path)
 
 **4.3. Configurar el sistema de archivos EFS** 
+
 La capa de archivos debe quedar configurada con el servicio `EFS de AWS`, por lo que debes seguir el siguiente tutorial para que el servicio `EFS` pueda ser utilizado en el `cluster K8`:
 
 [Crear un sistema de archivos EFS - Documentación del controlador CSI de AWS EFS](https://github.com/kubernetes-sigs/aws-efs-csi-driver/blob/master/docs/efs-create-filesystem.md)
@@ -208,6 +210,7 @@ Por último crearemos el `access point` para nuestro servicio `EFS` en `AWS` par
 ![image](https://github.com/user-attachments/assets/f49f58a8-af4c-4589-9880-13a41772b12b)
 
 **4.4. Instalar controladores para EFS** 
+
  Instalaremos los controladores necesarios para que EFS pueda ser utilizado en el clúster.
 1. Instalamos Helm:
 ```bash
@@ -227,6 +230,7 @@ Esto desplegará el controlador CSI de EFS en tu clúster EKS, lo que te permiti
 [Instalación de Helm](https://helm.sh/docs/intro/install/)
 
 **4.5.  Instalar ingress-nginx en el cluster.** 
+
 Para utilizar el balanceador de carga con nginx es necesario tener instalado en el cluster ingress-nginx como se explica a continuación:
 
 1. Aplicar el manifiesto de Ingress NGINX.
@@ -246,10 +250,12 @@ kubectl get service ingress-nginx-controller --namespace ingress-nginx
 ```
 
 **4.6.  Aplicar los archivo YAML.** 
+
 Para la aplicación de la imagen de Drupal, utilizaremos la imagen proporcionada por Bitnami. A continuación se detalla la documentación oficial que se puede consultar para obtener la información del paso a paso para instalar está imagen en nuestro clúster:
 Documentación oficial de Bitnami Drupal](https://hub.docker.com/r/bitnami/drupal)
 
 **4.7. Certificado SSL.**
+
 En esta sección, abordaremos el proceso de creación de un certificado SSL para asegurar la comunicación entre el servidor y los clientes. Para usos prácticos haremos uso de la plataforma Let's Encrypt para proteger la información sensible y garantizar la integridad de los datos transmitidos, para ello seguiremos los siguientes pasos:
 
 1. Instalar cert-manager:
