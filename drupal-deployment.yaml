@@ -1,0 +1,130 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: drupal
+  labels:
+    app: drupal
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: drupal
+    tier: frontend
+  type: ClusterIP
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: efs-sc
+provisioner: efs.csi.aws.com
+mountOptions:
+   - dir_mode=777
+   - file_mode=777
+   - uid=1000
+   - gid=1000
+parameters:
+  provisioningMode: efs-ap
+  fileSystemId: fs-06c23bdce6896409b
+  directoryPerms: "700"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: drupal-efs-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: efs-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-06c23bdce6896409b::fsap-096180899a52a7693  # Modificar con el Id del efs y con Id del access-point   
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: drupal-efs-pvc
+  labels:
+    app: drupal
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: efs-sc
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: drupal
+  labels:
+    app: drupal
+spec:
+  selector:
+    matchLabels:
+      app: drupal
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: drupal
+        tier: frontend
+    spec:
+      containers:
+      - image: bitnami/drupal:latest
+        name: drupal
+        env:
+        - name: BITNAMI_DEBUG
+          value: "true"
+        - name: DRUPAL_DATA_TO_PERSIST
+          value: "sites/ themes/ modules/ profiles/"
+        - name: DRUPAL_SKIP_BOOTSTRAP
+          value: "yes"
+        - name: DRUPAL_HASH_SALT
+          value: "iiG0FQ7kWUUOa6ImyNC7PkERMLZy/9bfC/tmynkuRXg="
+        - name: DRUPAL_CONFIG_SYNC_DIR
+          value: "/var/www/html/sites/default/files/config"
+        - name: DRUPAL_DATABASE_HOST
+          value: 'drupal-mysql'
+        - name: DRUPAL_DATABASE_NAME
+          value: "drupal"
+        - name: DRUPAL_DATABASE_USER
+          value: root
+        - name: DRUPAL_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass-5hk576t2ck
+              key: password
+        ports:
+        - containerPort: 8080
+          name: drupal
+        volumeMounts:
+          - name: drupal-persistent-storage
+            mountPath: /var/www/html/modules
+            subPath: modules
+          - name: drupal-persistent-storage
+            mountPath: /var/www/html/profiles
+            subPath: profiles
+          - name: drupal-persistent-storage
+            mountPath: /var/www/html/sites
+            subPath: sites
+          - name: drupal-persistent-storage
+            mountPath: /var/www/html/themes
+            subPath: themes
+          - name: drupal-persistent-storage
+            mountPath: /var/www/html/sites/default/files/config
+            subPath: config
+      volumes:
+      - name: drupal-persistent-storage
+        persistentVolumeClaim:
+          claimName: drupal-efs-pvc
+
